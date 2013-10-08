@@ -1,0 +1,74 @@
+<style>
+.panel .text{
+	width: 99%;
+	height: 400px;
+}
+.panel .text{
+	display: block;
+	resize: none;
+}
+.tag-list{
+	list-style: none;
+	margin: 10px 0;
+	width: 500px;
+}
+.tag-list li{
+	float: left;
+	margin: 3px 5px;
+}
+.tag-list li .addtag{
+	background: #ebf8f9;
+}
+.tag-list li .addtag:hover{
+	background: #66FF94;
+}
+.tag-list li .removetag{
+	color: #bbb;
+	background: #ebf8f9;
+}
+</style>
+<script type="text/javascript" src="<?php echo $this->cfg('_SERVER_URL_')?>/public/js//jquery.js"></script>
+<script type="text/javascript" src="<?php echo $this->cfg('_SERVER_URL_')?>/public/js/editor/xheditor-1.1.14-zh-cn.min.js"></script>
+<div class="panel">
+	<div class="main">
+		<label>标题：</label>
+		<input type="text" class="title" id="title" value="" style="width: 97%"/>
+		<div><label>上传图片（width > 250）：</label><textarea id="elm2" name="elm2" rows="12" cols="90" style="width: 100%"></textarea></div>
+		<label>描述：</label>
+		<textarea id="elm1" name="elm1" rows="12" cols="20" style="width: 100%"></textarea>
+		<div style="clear: both;"></div>
+		<div style="padding: 10px 0;"><input type="button" value="保存" id="save"/></div>
+	</div>
+</div>
+<script>
+$(function(){
+	$('#save').on('click', saveAll);
+	function saveAll(){
+		var title = $('#title').val();
+		var path = $('#elm2').val();
+		var des = $('#elm1').val();
+		$.post(AY.baseUrl()+'/photo/index/addphoto', {title: title, path: path, des: des}, function(rs){
+			if(rs.status){
+				// AY.Redirect.url(AY.baseUrl()+'/photo/');
+			} else{
+				alert('error');
+			}
+		}, 'json');
+	}
+	$('#elm1').xheditor({
+		tools:'simple',
+		upLinkUrl: AY.baseUrl() + "/upload/upload",
+		upLinkExt:"zip,rar,txt",
+		upImgUrl: AY.baseUrl() + "/upload/upload",
+		upImgExt:"jpg,jpeg,gif,png"
+	});
+	$('#elm2').xheditor({
+		tools:'mini',
+		upLinkUrl: AY.baseUrl() + "/upload/upload",
+		upLinkExt:"zip,rar,txt",
+		upImgUrl: AY.baseUrl() + "/upload/upload",
+		upImgExt:"jpg,jpeg,gif,png"
+	});
+	$('#xhe1_Tool').hide();
+});
+</script>

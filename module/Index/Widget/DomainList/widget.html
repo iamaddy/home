@@ -1,0 +1,89 @@
+<div class="modal hide dd-popup dd-popup-ckgg fade" id="tabelDomain">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3>选择域</h3>
+    </div>
+    <div class="modal-body clearfix">
+        <ul class="nav nav-tabs">
+	    <li class="active">
+	    <a name="already-url">已定义</a>
+	    </li>
+	    <li><a name="user-defined-url">自定义</a></li>
+    	</ul>
+        <div id="already-url">
+            <ul style="list-style-type:none; margin:0;width:100%;" data-node-name="domain-ul">
+            
+            </ul>
+        </div>
+        <div id="user-defined-url" style="display: none">
+        	<table class="table table-bordered dd-ad-new">
+				<tbody>
+					<tr>
+						<th width="355">链接地址</th>
+						<th width="69">匹配类型 <span class="dd-icon-help" href="#"></span>
+						</th>
+						<th width="35">操作</th>
+					</tr>
+					<tr>
+						<td>
+							<div class="controls dd-w355">
+								<input type="text" class="dd-w340" id="input01" name="input-url">
+								<p class="help-block">示例：http://product.dangdang.com/products.aspx?product_id=</p>
+							</div>
+						</td>
+						<td>
+							<div class="controls dd-w65">
+								<label class="radio"> <input type="radio" node-name="abtest[0][type]" name="url[type]" value="0" checked="checked">全部
+								</label> <label class="radio"> <input type="radio" node-name="abtest[1][type]" name="url[type]" value="1"> 部分
+								</label> <label class="radio"> <input type="radio" node-name="abtest[2][type]" name="url[type]" value="2"> 正则
+								</label>
+							</div>
+						</td>
+						<td class="operate"><a id="clear" title="重置" style="cursor:pointer"><i class="icon-tag"></i></a></td>
+					</tr>
+				</tbody>
+			</table>
+        </div>
+    </div>
+    <div class="modal-header">
+<span id="url-info" class="label label-success" style="display:none"></span>
+        <button class="btn btn-primary" style=" margin-left: 750px;" id="btn-url">确&nbsp;认</button>
+    </div>
+</div>
+<script type="text/javascript">
+$(function(){
+	/* 选取domain */
+	$('a[data-dismiss="url-list"]').live('click', function(){
+		$('.label-important').removeClass();
+		$(this).attr('class','label label-important');
+		$('#url-info').text('URL:  '+$(this).attr('value')).attr('style', '');
+	});
+	/* 切换tab */
+	$('a[name="user-defined-url"]').click(function(){
+		$('#btn-url').html('保&nbsp;存');
+		$(this).parent().attr('class', 'active');
+		$('a[name="already-url"]').parent().removeClass();
+		$('#user-defined-url').attr('style', 'display: block');
+		$('#url-info').attr('style', 'display: none');
+		$('#already-url').slideUp(500, function(){$('[name="input-url"]').focus();});
+		
+	});
+	$('a[name="already-url"]').click(function(){
+		$('#btn-url').html('确&nbsp;认');
+		$(this).parent().attr('class', 'active');
+		$('a[name="user-defined-url"]').parent().removeClass();
+		$('#user-defined-url').attr('style', 'display:none');
+		if($('#url-info').text() == '') {
+			$('#url-info').attr('style', 'display: none');
+		} else {
+			$('#url-info').attr('style', '');
+		}
+		$('#already-url').slideDown(500);
+	});
+	/* 清空值 */
+	$('#clear').live('click', function() {
+		$('[name="input-url"]').val("").focus();
+		$('input[name="url[type]"]:eq(0)').attr("checked",'checked');
+	});
+})
+</script>

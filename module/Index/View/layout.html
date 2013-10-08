@@ -1,0 +1,154 @@
+<!DOCTYPE HTML>
+<html lang="zh">
+    <head>
+        <base href="<?php echo $this->cfg('_SERVER_URL_')?>/index.php/" />
+        <title>雷欧搬家</title>
+        <meta charset="utf-8">
+        <!--[if lt IE 9]><script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+        <link rel="stylesheet" type="text/css" href="<?php echo $this->cfg('_SERVER_URL_')?>/public/css/bootstrap.min.css" />
+        <link rel="stylesheet" type="text/css" href="<?php echo $this->cfg('_SERVER_URL_')?>/public/css/ace.min.css" />
+        <link rel="stylesheet" type="text/css" href="<?php echo $this->cfg('_SERVER_URL_')?>/public/css/ace-skins.min.css" />
+        <link rel="stylesheet" type="text/css" href="<?php echo $this->cfg('_SERVER_URL_')?>/public/css/ace-rtl.min.css" />
+		<link href="<?php echo $this->cfg('_SERVER_URL_')?>/public/css/font-awesome.min.css" rel="stylesheet">
+		 <link rel="stylesheet" type="text/css" href="<?php echo $this->cfg('_SERVER_URL_')?>/public/css/site.css" />
+    	<!--[if IE 7]>
+		  <link rel="stylesheet" href="<?php echo $this->cfg('_SERVER_URL_')?>/public/css/font-awesome-ie7.min.css" />
+		<![endif]-->
+		<!--[if lte IE 8]>
+		  <link rel="stylesheet" href="<?php echo $this->cfg('_SERVER_URL_')?>/public/css/ace-ie.min.css" />
+		<![endif]-->
+		<!--[if lt IE 9]>
+		<script src="<?php echo $this->cfg('_SERVER_URL_')?>/public/js/html5shiv.js"></script>
+		<script src="<?php echo $this->cfg('_SERVER_URL_')?>/public/js/respond.min.js"></script>
+		<![endif]-->
+    	<script type="text/javascript" src="<?php echo $this->cfg('_SERVER_URL_')?>/public/js/jquery.js"></script>
+       <script type="text/javascript" src="<?php echo $this->cfg('_SERVER_URL_')?>/public/js/addy_url.js"></script>
+       <script type="text/javascript" src="<?php echo $this->cfg('_SERVER_URL_')?>/public/js/cookiestorage.js"></script>
+    <script src="<?php echo $this->cfg('_SERVER_URL_')?>/public/js/bootstrap.min.js"></script>
+    </head>
+    <body class="navbar-fixed">
+    	<?php $this->widget('Index::Nav');?>
+    <div class="main-container" id="main-container">
+    	<div class="main-container-inner">
+				<a class=" " id="menu-toggler" href="#">
+					<span class="menu-text"></span>
+				</a>
+				<div class="sidebar sidebar-fixed" id="sidebar">
+					<script type="text/javascript">
+						try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
+					</script>
+
+					<div class="sidebar-shortcuts" id="sidebar-shortcuts">
+						<div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">
+							<button class="btn btn-success">
+								<!--<i class="icon-signal"></i>
+							--></button>
+
+							<button class="btn btn-info">
+								<!--<i class="icon-pencil"></i>
+							--></button>
+
+							<button class="btn btn-warning">
+								<!--<i class="icon-group"></i>
+							--></button>
+
+							<button class="btn btn-danger">
+								<!--<i class="icon-cogs"></i>
+							--></button>
+						</div>
+
+						<div class="sidebar-shortcuts-mini" id="sidebar-shortcuts-mini">
+							<span class="btn btn-success"></span>
+
+							<span class="btn btn-info"></span>
+
+							<span class="btn btn-warning"></span>
+
+							<span class="btn btn-danger"></span>
+						</div>
+					</div><!-- #sidebar-shortcuts -->
+
+					<ul id="lnav" class="nav nav-list">
+					<?php if(!isset($_SESSION['iamaddy_uid']) || $_SESSION['iamaddy_uid'] === ""):?>
+						<li id="order" class="active">
+							<a href="order/index/">
+								<i class="icon-jpy"></i>
+								<span class="menu-text">我要报价</span>
+							</a>
+						</li>
+
+						<!--<li>
+							<a href="order/index/list">
+								<i class="icon-text-width"></i>
+								<span class="menu-text"> 物品清单 </span>
+							</a>
+						</li>
+
+						--><li id="standard">
+							<a href="news/index/charge" class="dropdown-toggle">
+								<i class="icon-tasks"></i>
+								<span class="menu-text"> 收费标准</span>
+							</a>
+						</li>
+						<li id="news">
+							<a href="news/index" class="dropdown-toggle">
+								<i class=" icon-comment"></i>
+								<span class="menu-text"> 系统公告</span>
+							</a>
+						</li>
+						<?php else:?>
+						<li id="oadmin" class="active">
+							<a href="order/index/admin" class="dropdown-toggle">
+								<i class="icon-shopping-cart"></i>
+								<span class="menu-text"> 订单中心</span>
+							</a>
+						</li>
+						<li id="nadmin">
+							<a href="news/index/add" class="dropdown-toggle">
+								<i class="icon-comment"></i>
+								<span class="menu-text">公告后台</span>
+							</a>
+						</li>
+						<?php endif;?>
+					</ul><!-- /.nav-list -->
+				</div>
+				<div class="main-content">
+					<div class="breadcrumbs" id="breadcrumbs"></div>
+					<div class="page-content">
+						<div class="row">
+							<div class="col-xs-12">
+								<?php $this->renderer(false) ;?>
+							</div>
+						</div>
+					</div>
+					<div id="footer" class="center">
+		Copyright &copy; 2013 深圳市雷欧搬家服务有限公司 All Rights Reserved 粤 ICP 备 12084145 号 
+		<a class="item" href="#">常见问题</a>
+		<a class="item" href="#">联系我们</a>
+		<a class="item" href="#">法律声明</a>
+		<a class="item" href="index.php/user/login">后台管理</a>
+		</div>
+    	</div>
+    </div>
+    </div>
+    </body>
+</html>
+<script>
+var url  = document.location.href;
+if(!!~url.indexOf('news/index/charge')){
+	$('#lnav > li').removeClass('active');
+	$('#standard').addClass('active');
+}else if(!!~url.indexOf('news/index/add')){
+	$('#lnav > li').removeClass('active');
+	$('#nadmin').addClass('active');
+}else if(!!~url.indexOf('order/index/admin')){
+	$('#lnav > li').removeClass('active');
+	$('#oadmin').addClass('active');
+}else if(!!~url.indexOf('order')){
+	$('#lnav > li').removeClass('active');
+	$('#order').addClass('active');
+}else if(!!~url.indexOf('news/index')){
+	$('#lnav > li').removeClass('active');
+	$('#news').addClass('active');
+}
+</script>

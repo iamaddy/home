@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>雷欧搬家</title>
+<link href="./public/css/bootstrap.min.css" rel="StyleSheet"> 
+<link href="./public/css/index.css" rel="StyleSheet">
+ <!--[if lt IE 9]><script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+ <!--[if IE 7]>
+		  <link rel="stylesheet" href="<?php echo $this->cfg('_SERVER_URL_')?>/public/css/font-awesome-ie7.min.css" />
+		<![endif]-->
+		<!--[if lte IE 8]>
+		  <link rel="stylesheet" href="<?php echo $this->cfg('_SERVER_URL_')?>/public/css/ace-ie.min.css" />
+		<![endif]-->
+		<!--[if lt IE 9]>
+		<script src="<?php echo $this->cfg('_SERVER_URL_')?>/public/js/html5shiv.js"></script>
+		<script src="<?php echo $this->cfg('_SERVER_URL_')?>/public/js/respond.min.js"></script>
+		<![endif]-->
+<style type="text/css">
+body{
+		overflow:scroll;
+}
+</style>
+</head>
+<body>
+	<div class="container">
+	<div class="panel" style="height: 570px;width:1018px;">
+	<div class="login">
+			<form  method="post" action="index.php/user/auth" onsubmit="return checkall()" class="form-horizontal" style="margin: 5px 0 0 15px;">
+			<div class="control-group group">
+				<label class="control-label" for="inputPassword"><a style="color: black;" id="help">如何获得门店编码？</a></label>
+			</div>
+			<div class="form-group">
+			    <label class="col-sm-4 control-label no-padding-right" for="inputEmail">门店编码：</label>
+			    <div class="controls">
+			      <input name="code" type="text" id="code" placeholder="" class="input-small span2">
+			    </div>
+			  </div>
+			<div class="form-group" id="forphonenum">
+			    <label class="col-sm-4 control-label no-padding-right" for="inputEmail">手机号码：</label>
+			    <div class="controls">
+			      <input name="phonenum" type="text" id="phonenum" placeholder="" class="input-small span2">
+			    </div>
+			  </div>
+			  <div class="form-group">
+			    <label class="col-sm-4 control-label no-padding-right" for="inputPassword">验证码：</label>
+			    <div class="controls">
+			      <input type="text" class="col-xs-3" id="indencode" placeholder="">
+			    	<img style="margin-left: 10px;cursor: pointer;" id="getcode_num" title="看不清，点击换一张" src="getidencode.php"/>
+			    </div>
+			  </div>
+			  <div class="form-group">
+			    <div class="controls" style="text-align: center;">
+			      <button style="width: 100px;" type="submit" class="btn btn-success">登录</button>
+			    </div>
+			  </div>
+		</form>
+	</div>
+	</div>
+	<div id="footer" class="center">
+		Copyright &copy; 2013 深圳市雷欧搬家服务有限公司 All Rights Reserved 粤 ICP 备 12084145 号 
+		<a class="item" href="#">常见问题</a>
+		<a class="item" href="#">联系我们</a>
+		<a class="item" href="#">法律声明</a>
+		<a class="item" href="index.php/user/login">后台管理</a>
+		</div>
+	</div>
+</body>
+</html>
+<script src="./public/js/jquery.js"></script>
+<script>
+var b_info = true; 
+$("#getcode_num").click(function(){ 
+    $(this).attr("src", 'getidencode.php?' + Math.random()); 
+}); 
+$('#phonenum').on('blur', check);
+function check(){
+	var number = $('#phonenum').val();
+	if(number !=="" && !/^(1(([35][0-9])|(47)|[8][0126789]))\d{8}$/.test(number)){
+		$('#forphonenum').addClass('has-error');
+		b_info = false;
+	} else{
+		$('#forphonenum').removeClass('has-error');
+		b_info = true;
+	}
+}
+function checkall(){
+	var icode = $('#indencode').val();
+	if(!icode){
+		alert('请输入验证码');
+		return false;
+	}
+	var number = $('#phonenum').val();
+	if(number !=="" && !/^(1(([35][0-9])|(47)|[8][0126789]))\d{8}$/.test(number)){
+		alert('请输入正确的手机号码');
+		return false;
+	}
+	$.ajaxSetup({
+		async : false
+	});
+	var status = false;
+	$.post('getidencode.php', {action: 'check', code: icode}, function(dt){
+		if(dt.status){
+			status =  true;
+		}else{
+			alert('验证码错误');
+		}
+	},'json');
+	return status;
+}
+</script>

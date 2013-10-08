@@ -1,0 +1,118 @@
+<style>
+.photo {
+	text-align: center;
+}
+</style>
+<div class="main-panel" id="top">
+<?php if(count($this->data['img']) > 0):?>
+<input id="image_id" type="hidden" value="<?php echo $this->data['img']['image_id']?>" />
+<div class="panel">
+	<div class="main">
+		<div class="title"><?php echo $this->data['img']['title']?></div>
+		<div class="info">
+			<span><?php echo $this->data['img']['shoot_time']?></span>
+		</div>
+		<div class="photo">
+			<a title="<?php echo $this->data['img']['title']?>"><?php echo $this->data['img']['image_path']?></a>
+			<div id="des"><?php echo $this->data['img']['describe']?></div>
+		</div>
+	</div>
+	<div class="toolbar">
+		<?php if($this->getUserState()): ?>
+			<a action="edit" data="<?php echo $this->data['img']['image_id']?>">编辑</a>
+			<a action="del" data="<?php echo $this->data['img']['image_id']?>">删除</a>
+		<?php endif; ?>
+		<a action="like" class="fav-add btn-fav" title="觉得很赞？" href="javascript::void(0);">赞</a>
+	</div>
+</div>
+<?php $this->widget('Index::Comment');?>
+<?php endif;?>
+</div>
+<div class="back-to-top">
+	<a id="J_BackToTop" class="sprites" title="回到顶部" href="javascript:void(0)"></a>
+</div>
+<script>
+$('[action="edit"]').on('click', function(){
+	AY.Redirect.url(AY.baseUrl()+'/blog/view/edit?p=' + $('#blog_id').val());
+});
+$('[action="like"]').on('click', function(){
+	if($(this).attr('class').match(/fav-add/)){
+		$(this).removeClass('fav-add').addClass('fav-cancel');
+	} else {
+		$(this).removeClass('fav-cancel').addClass('fav-add');
+	}
+});
+$('#say').on('click', function(){
+	var data = {};
+	data.comment 	= $('#comment-text').val(),
+	data.author 	= $('#comment-author').val(),
+	data.mail		= $('#comment-email').val(),
+	data.key		= $('#image_id').val();
+	if(!data.comment){
+		alert("请说点话在提交吧");
+		return;
+	}
+	if(!data.author){
+		alert("请留下您的大名吧");
+		return;
+	}
+	if(!data.mail){
+		alert("若没什么问题，留下你的联系邮箱吧");
+		return;
+	}
+	$.post(AY.baseUrl()+'/photo/index/say', data, function(dt) {
+        if(dt.status) {
+        	$('#count-comment').text(parseInt($('#count-comment').text()) + 1);
+        	var node = '<li class="commentlist-item">'
+							+'<div class="author-title"><span class="time">'+now()+'</span>&nbsp;&nbsp;<a>'+parseStr(data.author)+'</a>&nbsp;说:</div>'
+							+'<div class="content">'+parseStr(data.comment)+'</div>'
+						+'</li>';
+        	$('#comment-text').val('');
+        	$('#comment-author').val('');
+        	$('#comment-email').val('');
+        	$('#commentlist').prepend(node);
+        	var path = window.location.href;
+        	if(path.match(/(#departure)/) != null){
+        		window.location = path;
+        	}else{
+        		window.location = path + '#departure';
+        	}
+        	$('#sofa').hide();
+        } else {
+        	alert('false');
+        }
+    }, 'json');
+});
+$('#J_BackToTop').on('click', function(){
+	var path = window.location.href;
+	if(path.match(/(#top)/) != null){
+		window.location = path;
+	}else{
+		window.location = path + '#top';
+	}
+	$(this).hide();
+});
+$(window).scroll(function() {
+	if($(window).scrollTop() > 1000){
+		$('#J_BackToTop').fadeIn();
+	} else{
+		$('#J_BackToTop').fadeOut();
+	}
+});
+
+function now(){
+	var date = new Date();
+	var now = "";
+	now += date.getFullYear() + '-';
+	now += date.getMonth() + "-";
+	now += date.getDate() + ' ';
+	now += date.getHours() + ':';
+	now += date.getMinutes() + ':';
+	now += date.getSeconds();
+	return now;
+}
+function parseStr(str){
+	var rs = str.replace(/</gi, '&lt');
+	return rs.replace(/>/gi, '&gt');
+}
+</script>

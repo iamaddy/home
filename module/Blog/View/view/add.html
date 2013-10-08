@@ -1,0 +1,115 @@
+<style>
+.panel .text{
+	width: 99%;
+	height: 400px;
+}
+.panel .text{
+	display: block;
+	resize: none;
+}
+.tag-list{
+	list-style: none;
+	margin: 10px 0;
+	width: 500px;
+}
+.tag-list li{
+	float: left;
+	margin: 3px 5px;
+}
+.tag-list li .addtag{
+	background: #ebf8f9;
+}
+.tag-list li .addtag:hover{
+	background: #66FF94;
+}
+.tag-list li .removetag{
+	color: #bbb;
+	background: #ebf8f9;
+}
+</style>
+<script type="text/javascript" src="<?php echo $this->cfg('_SERVER_URL_')?>/public/js/jquery.js"></script>
+<script type="text/javascript" src="<?php echo $this->cfg('_SERVER_URL_')?>/public/js/editor/xheditor-1.1.14-zh-cn.min.js"></script>
+<div class="panel">
+	<div class="main">
+		<label>标题：</label>
+		<input type="text" class="title" id="title" value="" style="width: 97%"/>
+		<div><label>海报（330*200）：</label><textarea id="elm2" name="elm2" rows="20" cols="90" style="width: 100%"></textarea></div>
+		<label>正文：</label>
+		<textarea id="elm1" name="elm1" rows="20" cols="90" style="width: 100%"></textarea>
+		<label>标签：</label>
+		<div class="category">
+			新建<input id="new_category" type="text" style="width: 97%">
+			<label>已有</label>
+			<div id="category_exist">
+				<ul class="tag-list">
+					<?php foreach($this->data['tags'] as $key => $value):?>
+						<li><a href="javascript:void(0);" data="<?php echo $value['category_id']?>" name="tag-item" class="addtag"><?php echo $value['category_name']?></a></li>
+					<?php endforeach;?>
+				</ul>
+			</div>
+		</div>
+		<div style="clear: both;"></div>
+		<div style="padding: 10px 0;"><input type="button" value="保存" id="save"/></div>
+	</div>
+</div>
+<script>
+$(function(){
+	$('#save').on('click', saveAll);
+	function saveAll(){
+		var title = $('#title').val();
+		var text = $('#elm1').val();
+		var bill = $('#elm2').val();
+		var tags = $('#new_category').val();
+		$.post(AY.baseUrl()+'/blog/view/save', {title: title, text: text, tags: tags, bill: bill}, function(rs){
+			if(rs.status){
+				AY.Redirect.url(AY.baseUrl()+'/blog/');
+			} else{
+				alert('error');
+			}
+		}, 'json');
+	}
+	$('#elm1').xheditor({
+		tools:'simple',
+		upLinkUrl: AY.baseUrl() + "/upload/upload",
+		upLinkExt:"zip,rar,txt",
+		upImgUrl: AY.baseUrl() + "/upload/upload",
+		upImgExt:"jpg,jpeg,gif,png"
+	});
+	$('#elm2').xheditor({
+		tools:'mini',
+		upLinkUrl: AY.baseUrl() + "/upload/upload",
+		upLinkExt:"zip,rar,txt",
+		upImgUrl: AY.baseUrl() + "/upload/upload",
+		upImgExt:"jpg,jpeg,gif,png"
+	});
+	$('#xhe1_Tool').hide();
+	$('.addtag').live('click', function(){
+		var _old = $('#new_category').val();
+		var _new = _old.replace(/\s*$/g, '') + ' ' + $(this).text() + ' ';
+		$('#new_category').val(_new);
+		$(this).attr('class', 'removetag');
+	});
+	$('.removetag').live('click', function(){
+		var val = $('#new_category').val();
+		$('#new_category').val(val.replace($(this).text() + ' ', ''));
+		$(this).attr('class', 'addtag');
+	});
+	$('#new_category').on('keypress', changeStyle);
+	$('#new_category').on('keyup', changeStyle);
+	$('#new_category').on('blur', changeStyle);
+	function changeStyle(){
+		var val = $('#new_category').val();
+		var allItem = {};
+		$.each($('[name="tag-item"]'), function(i, item){
+			allItem[$(item).attr('data')] = $(item).text();
+		});
+		for(var a in allItem){
+			if(val.indexOf(allItem[a]) > -1){
+				$('[data="'+ a +'"]').attr('class', 'removetag');
+			} else{
+				$('[data="'+ a +'"]').attr('class', 'addtag');
+			}
+		}
+	}
+});
+</script>

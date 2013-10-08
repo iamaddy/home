@@ -1,0 +1,105 @@
+<style>
+#photolist{
+	list-style: none;
+}
+.box{
+	text-align: center;
+	border:1px solid #ebf8f9;
+}
+.box:hover{
+	border:1px solid #08c;
+}
+#photopanel{
+	position: relative;
+	width: 100%;
+}
+.like{
+	background-position: 0 0px;
+	display: inline-block;
+	height: 12px;
+	line-height: 10px;
+	padding-left: 13px;
+	margin-right: 13px;
+}
+.like:hover{
+	background-position: 0 -18px;
+	
+}
+.comment{
+	height: 12px;
+	line-height: 10px;
+	display: inline-block;
+	background-position: 0 -35px;
+	padding-left: 13px;
+}
+.comment:hover{
+	background-position: 0 -53px;
+}
+
+.content{
+	display: block;
+	height: 26px;
+}
+.content a{
+	margin-top: 8px;
+}
+#loading, #over{
+	background: #eee;
+	line-height: 30px;
+	width: 99%;
+	text-align: center;
+	margin-top: 2px;
+	border: 1px solid #ccc;
+	display: none;
+}
+#status{
+	line-height: 30px;
+	height: 34px;
+	margin-top: 2px;
+}
+.hide{
+	display: none;
+}
+</style>
+<script type="text/html" id="boxtpl">
+<div class="box hide" title="">
+	<a class="img" href="<%=link%>">
+		<%=image_path%>
+	</a>
+	<span class="content">
+		<a id="like" class="like sprites">12</a>
+		<a class="sprites comment">13</a>
+	</span>
+</div>
+</script>
+<script>
+	/* var img = document.getElementById('test');
+	img.src = "public/upload/day_130617/201306171637442644.jpg";
+	img.onload = function(){
+		if(img.complete){
+			alert(img.height);
+		}
+	}; */
+</script>
+<div id="photopanel">
+	<!--  
+     -->
+</div>
+<div id="status">
+	<div id="loading">正在加载......</div>
+	<div id="over">已经到底部啦！</div>
+</div>
+<script>
+/* $(function(){
+	$.get(AY.baseUrl()+'/photo/index/getphotos', function(data){
+		var html = "";
+		for(var i = 0, l = data.length; i < l;i++){
+			html += '<li><a>'+data[i].image_path+'</a></li>';
+		}
+		$('#photolist').append(html);
+	}, 'json');
+}); */
+
+</script>
+<script type="text/javascript" src="<?php echo $this->cfg('_SERVER_URL_')?>/public/js/artTemplate.min.js"></script>
+<script type="text/javascript" src="<?php echo $this->cfg('_SERVER_URL_')?>/public/js/waterflow.js"></script>

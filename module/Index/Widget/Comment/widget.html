@@ -1,0 +1,61 @@
+<link rel="stylesheet" type="text/css" href="<?php echo $this->cfg('_SERVER_URL_')?>/public/css/comment.css" />
+<div class="departure">
+	<div class="title">回应（<a id="count-comment"><?php echo $this->comment_count; ?></a>条）</div>
+	<ul class="commentlist" id="commentlist">
+	<?php if(count($this->comment) > 0):?>
+	<?php foreach($this->comment as $key => $value):?>
+		<?php if($_SESSION['username']):?>
+			<?php echo	'<li class="commentlist-item">'.
+							'<div class="author-title"><span class="time">'.$value['create_time'].'</span>&nbsp;&nbsp;<a>'.
+							htmlspecialchars($value['author']).'</a>&nbsp;说:<a action="del" class="del" for="'.$value['id'].'">删除</a></div>'.
+							'<div class="content">'.htmlspecialchars($value['content']).'</div>'.
+			'</li>';?>
+		<?php endif;?>
+		<?php if(!$_SESSION['username']):?>
+			<?php echo	'<li class="commentlist-item">'.
+							'<div class="author-title"><span class="time">'.$value['create_time'].'</span>&nbsp;&nbsp;<a>'.
+							htmlspecialchars($value['author']).'</a>&nbsp;说:</div>'.
+							'<div class="content">'.htmlspecialchars($value['content']).'</div>'.
+							'</li>';?>
+		<?php endif;?>
+	<?php endforeach;?>
+	<?php endif;?>
+	</ul>
+	<?php if(count($this->comment) <= 0):?>
+	<?php echo '<div id="sofa" style="text-align: center;">亲，沙发等你来座~</div>'; ?>
+	<?php endif;?>
+	<div class="comments-open" id="comments-open">
+        <div class="comments-open-header title">我要说</div>
+        <div class="comments-open-content">
+            <div id="comment-greeting"></div>
+            <form method="post" name="comments_form" id="comments-form">
+                <div id="comments-open-data">
+            <div id="comments-open-text">
+                    <p><textarea id="comment-text" name="text" rows="10" cols="50" placeholder="您不想说的点什么？"></textarea></p>
+                </div>
+                    <div id="comment-form-name">
+                        <input type="text" id="comment-author" name="author" size="30" value="" placeholder="请问怎么称呼您呢？">
+                    </div>
+                    <div id="comment-form-email">
+                        <input type="text" id="comment-email" name="email" size="30" value="" placeholder="好歹让我知道怎么联系您吧">
+                    </div>
+                </div>
+                    <div id="comment-form-reply" style="display:none">
+                    <input type="checkbox" id="comment-reply" name="comment_reply" value="" onclick="mtSetCommentParentID()">
+                    <label for="comment-reply" id="comment-reply-label"></label>
+                </div>
+                <div id="comments-open-captcha"></div>
+                <div id="comments-open-footer">
+					<div id="wait" style="display:none;">
+					<p><strong>正在发表您的评论，请稍候</strong></p>
+					<p>
+					<input type="text" name="percent" size="3" style="font-family:Arial; color:black;text-align:center; border-width:medium; border-style:none;">           
+					<input type="text" name="chart" size="46" style="font-family:Arial;font-weight:bolder; color:black; padding:0px; border-style:none;">
+					</p>
+					</div>
+                    <p><input class="btn btn-primary" type="button" id="say" accesskey="s" name="post" value="我说" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

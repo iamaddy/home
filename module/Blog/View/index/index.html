@@ -1,0 +1,30 @@
+<link href="public/css/index.css"  rel="stylesheet">
+<div class="blog">
+ 	<ul class="article">
+		<?php foreach($this->data['article'] as $key => $value):?>
+		<?php echo 
+			'<li class="item">
+				<div class="content_banner">
+    				<a href="index.php/blog/view?p=' . $value['article_key'] . '">
+    					<img src="'.$value["image_name"].'" />
+    				</a>
+   	 			</div>
+				<div class="title">
+					<a title="' . $value['title'] . '" href="index.php/blog/view?p=' . $value['article_key'] . '">' . Util::subString($value['title'], 26) . '</a>
+				</div>
+				<div class="content">' . $value['summary'] . '......</div>
+				<div class="good">
+					<span class="scan small">' . $value['scan_num'] . '<i class="icon-eye-open items"></i></span>
+					<span class="like small">' . $value['like_num'] . '<i class="icon-heart items"></i></span>
+					<a href="index.php/blog/view?p=' . $value['article_key'] . '#departure"><span class="small">' . $value['discuss_num'] . '<i class="icon-comment items"></i></span></a>
+				</div>
+				<div class="date">
+					<span class="day">' . substr($value['create_time'], 8, 2) . '</span>
+					<span class="year">' . substr($value['create_time'], 0, 4) . '/</span><span class="month">' . substr($value['create_time'], 5, 2) . '</span>
+				</div>
+			</li>';?>
+		<?php endforeach;?>
+	</ul>
+</div>
+<div style="clear: both;"></div>
+<?php $this->widget('Index::Pager', array('num' => $this->data['num'], 'size' => 12, 'page' => isset($_GET['page']) && $_GET['page']? $_GET['page']: 1));?>

@@ -1,0 +1,43 @@
+<style>
+.error{
+	color: red;
+	display: none;
+}
+</style>
+<form action="<?php echo $this->cfg('_BASE_URL_')?>/user/authenticate" method="post" onsubmit="return check()">
+    <div class="login_wrap">
+        <div class="cont">
+            <p style="height: 16px;"><span class="error">您输入的用户名或密码错误!</span></p>
+            <p><label class="prompt" for="">用户名：</label><input name="username" type="text"></p>
+            <p><label class="prompt" for="">密&nbsp;&nbsp;码：</label><input name="password" type="password"></p>
+            <div class="submit"><button class="btn btn-primary" type="submit"><span>登录</span></button></div>
+        </div>
+        <input type="hidden" value="" name="returnurl" />
+    </div>
+</form>
+<script type="text/javascript">
+	function check(){
+		if(!$('[name="username"]').val()){
+			alert('请输入用户名');
+			return false;
+		}
+		if(!$('[name="password"]').val()){
+			alert('请输入密码');
+			return false;
+		}
+	}
+	var cookie = new cookieStorage();
+	if(cookie.getItem('loginFlag')){
+		$('.error').show();
+		cookie.removeItem('loginFlag');
+	}
+    $(document).ready(function(){
+    	$('[name="username"]').focus();
+        $('input').keyup(function(){
+        	if($(this).val()){
+        		$('.error').hide();
+        	}
+        });
+        $('[name="returnurl"]').val(document.referrer);
+    });
+</script>

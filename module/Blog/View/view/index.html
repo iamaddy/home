@@ -1,0 +1,200 @@
+<style>
+#rightpanel{
+	float: right;
+	top: 100px;
+	position: fixed;
+	right: 100px;
+}
+#categorylist{
+	width: 250px;
+}
+#categorylist li{
+	float: left;
+	padding: 5px;
+}
+.info {
+	font: 12px Helvetica,Arial,sans-serif;
+	line-height: 2.62;
+	text-align: right;
+}
+</style>
+<div class="main-panel" id="top">
+<?php if(count($this->data['blog']) > 0):?>
+<input id="blog_id" type="hidden" value="<?php echo $this->data['blog']['article_key']?>" />
+<div class="panel">
+	<div class="main">
+		<div class="title"><?php echo htmlspecialchars ($this->data['blog']['title']);?></div>
+		<div class="info">
+			<ul>
+				<?php foreach($this->data['tags'] as $key => $value):?>
+					<li><?php echo $value['category_name'];?></li>
+				<?php endforeach;?>
+			</ul>
+			<span><?php echo $this->data['blog']['create_time'];?></span>
+		</div>
+		<div class="text"><?php echo $this->data['blog']['article']?></div>
+	</div>
+	<div class="toolbar">
+		<a action="like" class="fav-add btn-fav" title="觉得很赞？" href="javascript:void(0);">赞</a>
+		<span id="likenum" class="info"><?php echo htmlspecialchars ($this->data['blog']['like_num']);?></span><span class="info">人喜欢</span>
+	</div>
+</div>
+<div id="rightpanel">
+	<?php if($this->getUserState()): ?>
+	<div>
+		<input type="button" id="addbtn" value="新增" class="btn btn-primary"/>
+		<input type="button" action="edit" data="<?php echo $this->data['blog']['article_key']?>" value="编辑" class="btn btn-info">
+		<input type="button" action="delblog" id="departure" data="<?php echo $this->data['blog']['article_key']?>" value="删除" class="btn btn-danger">
+	</div>
+	<?php endif; ?>
+	<div id="categorypanel">
+		<h2>分类</h2>
+		<ul id="categorylist"></ul>
+	</div>
+</div>
+<?php $this->widget('Index::Comment', array('comment' => $this->data['comment'], 'comment_count' => $this->data['comment_count']));?>
+<?php endif;?>
+</div>
+<div class="back-to-top">
+	<a id="J_BackToTop" class="sprites" title="回到顶部" href="javascript:void(0)"></a>
+</div>
+<script>
+$(function(){
+	$.get(AY.baseUrl()+'/blog/view/getcategory', function(data){
+		if(data){
+			var html = '';
+			$.each(data.category, function(index, item){
+				html += '<li ><a href="'+AY.baseUrl()+'/blog?t='+item.category_id+'" id="'+item.category_id+'">'+item.category_name+'</a></li>'
+			});
+			$('#categorylist').append(html);
+		}
+	}, 'json');
+});
+$('[action="edit"]').on('click', function(){
+	AY.Redirect.url(AY.baseUrl()+'/blog/view/edit?p=' + $('#blog_id').val());
+});
+$('[action="delblog"]').on('click', function(){
+	if(confirm('确认删除？')){
+		var id = $(this).attr('data');
+		$.get(AY.baseUrl()+'/blog/view/del', {p: id}, function(data){
+			if(data.status){
+				AY.Redirect.url(AY.baseUrl()+'/blog/');
+			} else{
+				alert('删除失败');
+			}
+		}, 'json');	
+	}
+});
+$('[action="del"]').live('click', function(){
+	if(confirm('确认删除？')){
+		var id = $(this).attr('for');
+		var that = this;
+		$.get(AY.baseUrl()+'/blog/view/delcomment', {id: id}, function(data){
+			if(data.status){
+				$(that).parent().parent().remove();
+			} else{
+				alert('删除失败');
+			}
+		}, 'json');	
+	}
+});
+$('#addbtn').on('click', function(){
+	AY.Redirect.url(AY.baseUrl()+'/blog/view/add');
+});
+// 赞功能实现
+var cookie = new cookieStorage(3600 * 24 * 30);
+if(cookie.getItem('blog_like').indexOf($('#blog_id').val()) > -1){
+	$('[action="like"]').removeClass('fav-add').addClass('fav-cancel').attr('title', '亲，已经赞过了哦~');
+}
+$('[action="like"]').on('click', function(){
+	if($(this).attr('class').match(/fav-add/)){
+		var value = cookie.getItem('blog_like');
+		var bid = $('#blog_id').val();
+		value += '.' + bid;
+		cookie.setItem('blog_like', value);
+		var num = parseInt($('#likenum').text()) + 1;
+		$('#likenum').text(num);
+		$.get(AY.baseUrl()+'/blog/view/like', {id: bid, num: num}, function(){}, 'json');
+		$(this).removeClass('fav-add').addClass('fav-cancel').attr('title', '亲，已经赞过了哦~');
+	}
+});
+$('#say').on('click', function(){
+	var data = {};
+	data.comment 	= $('#comment-text').val(),
+	data.author 	= $('#comment-author').val(),
+	data.mail		= $('#comment-email').val(),
+	data.p			= $('#blog_id').val();
+	if(!data.comment){
+		alert("请说点话吧");
+		return;
+	}
+	if(!data.author){
+		alert("请留下大名吧");
+		return;
+	}
+	if(!data.mail){
+		alert("若没什么问题，留下你的联系邮箱吧");
+		return;
+	}
+	$.post(AY.baseUrl()+'/blog/view/say', data, function(dt) {
+        if(dt.id) {
+        	var cookie = new cookieStorage();
+        	var username = cookie.getItem('iamaddy_name'); 
+        	$('#count-comment').text(parseInt($('#count-comment').text()) + 1);
+        	var node = '<li class="commentlist-item">' +
+							'<div class="author-title"><span class="time">' + now( ) + 
+							'</span>&nbsp;&nbsp;<a>'+parseStr(data.author)+'</a>&nbsp;说:';
+			if(username){
+				node += '<a action="del" class="del" for="'+dt.id+'">删除</a>';
+			}
+			node += '</div><div class="content">' + parseStr(data.comment) + '</div></li>';
+        	$('#comment-text').val('');
+        	$('#comment-author').val('');
+        	$('#comment-email').val('');
+        	$('#commentlist').prepend(node);
+        	var path = window.location.href;
+        	if(path.match(/(#departure)/) != null){
+        		window.location = path;
+        	}else{
+        		window.location = path + '#departure';
+        	}
+        	$('#sofa').hide();
+        } else {
+        	alert('false');
+        }
+    }, 'json');
+});
+$('#J_BackToTop').on('click', function(){
+	$(this).hide();
+	$(window).unbind("scroll");
+	$('body').animate({ 
+		scrollTop: 0
+	  }, 500, function(){
+		  $(window).on('scroll', scroll);
+	  });
+});
+$(window).bind('scroll', scroll);
+function scroll() {
+	if($(window).scrollTop() > 1000){
+		$('#J_BackToTop').show().css('display', 'block');
+	} else{
+		$('#J_BackToTop').hide();
+	}
+}
+
+function now(){
+	var date = new Date();
+	var now = "";
+	now += date.getFullYear() + '-';
+	now += date.getMonth() + "-";
+	now += date.getDate() + ' ';
+	now += date.getHours() + ':';
+	now += date.getMinutes() + ':';
+	now += date.getSeconds();
+	return now;
+}
+function parseStr(str){
+	var rs = str.replace(/</gi, '&lt');
+	return rs.replace(/>/gi, '&gt');
+}
+</script>

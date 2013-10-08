@@ -1,0 +1,59 @@
+@CHARSET "UTF-8";
+.panel{
+	background: url(../images/index.jpg);
+	height: 650px;
+	width: 1018px;
+	margin: 0 auto;
+}
+.login{
+	position: relative;
+	top: 304px;
+	left: 585px;
+	width: 302px;
+	height: 200px;
+	background: #3893da;
+	border-radius: 6px;
+	-webkit-animation: panel-in 1s linear 0 1;
+	-webkit-box-shadow: 0px 1px 8px 0px rgba(0, 0, 0, .15), 0px 5px 70px 0px rgba(0, 0, 0, 0.15);
+	-moz-box-shadow: 0px 1px 8px 0px rgba(0, 0, 0, .15), 0px 5px 70px 0px rgba(0, 0, 0, 0.15);
+	-ms-box-shadow: 0px 1px 8px 0px rgba(0, 0, 0, .15), 0px 5px 70px 0px rgba(0, 0, 0, 0.15);
+	-o-box-shadow: 0px 1px 8px 0px rgba(0, 0, 0, .15), 0px 5px 70px 0px rgba(0, 0, 0, 0.15);
+	box-shadow: 0px 1px 8px 0px rgba(0, 0, 0, .15), 0px 5px 70px 0px rgba(0, 0, 0, 0.15);
+}
+.login .group{
+	margin-bottom: 10px;
+}
+.title{
+	text-align: center;
+}
+.center{
+	text-align: center;
+	vertical-align: middle;
+}
+#footer .item{
+	margin-left: 5px;
+}
+.list{
+	font-size: 14pt;
+	font-weight: bold;
+	margin: 10px 0;
+}
+.lou{
+	margin-right: 53px;
+}
+.container .ti{
+	margin-bottom: 7px;
+	margin-right: 34px;
+}
+.dd{
+	margin-right: 28px;
+}
+.container .phone{
+	margin-left: 0px;
+}
+.container .name{
+	margin-left: 14px;
+}
+.child{
+	margin: 5px 0;
+}

@@ -1,0 +1,16 @@
+<div class="row">
+<div class="page-header" style="
+    text-align: center;
+">
+							<h1>
+								<?php echo htmlspecialchars($this->data['news'][0]['title'])?>
+							</h1>
+						</div>
+							<div class="col-xs-12">
+								<!-- PAGE CONTENT BEGINS -->
+								<p class="lead">
+											<?php echo htmlspecialchars($this->data['news'][0]['content'])?>
+										</p>
+								<?php echo $this->data['news'][0]['create_date']?>
+								</div>
+								</div>

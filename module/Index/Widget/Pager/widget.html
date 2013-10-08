@@ -1,0 +1,44 @@
+<style>
+.page{
+	float: right;
+	margin-right: 10px;
+}
+.page div{
+	height: 40px;
+	width: 40px;
+	background-color: #eee;
+}
+.page #pre_page{
+	background-position: 16px -369px;
+}
+.page #next_page{
+	background-position: -37px -369px;
+}
+.page a{
+	height: 40px;
+	width: 40px;
+	background-color: #ccc;
+	display: block;
+}
+.page div{
+	float: left;
+	margin: 10px;
+}
+.page a:hover{
+	background-color:  #08c;
+}
+.page .pre{
+	background-position: 16px -440px;
+}
+.page .next{
+	background-position: -37px -440px;
+}
+</style>
+<?php
+if($this->pagenum > 0) {
+?>
+<div class="page">
+<div id="pre_page" class="sprites"><?php echo $this->page > 1? '<a class="pre sprites " title="上一页" href="javascript: AY.Redirect({page: '.($this->page-1).'})"></a>': ''?></div>
+<div id="next_page" class="sprites"><?php echo $this->page < $this->pagenum? '<a class="next sprites" title="下一页" href="javascript: AY.Redirect({page: '.($this->page+1).'})"></a>': ''?></div>
+</div>
+<?php }?>

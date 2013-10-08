@@ -1,0 +1,260 @@
+<style>
+.bold{
+	font-weight: bold;
+}
+.table .td-title{
+	padding: 3px;
+	background: #ccc;
+	text-align: center;
+	font-weight: bold;
+}
+.table tbody tr td{
+	padding: 3px;
+}
+</style>
+<div class="row">
+<div class="page-header">
+<h1>
+订单详情
+</h1>
+</div>
+<div class="col-xs-12">
+<div class="table-responsive">
+<!--startprint0-->
+	<table id="sample-table-1" class="table table-bordered">
+	<tbody>
+		<tr>
+				<td colspan="6"><h4 style="text-align: center;">搬家信息联络单</h4></td>
+		</tr>
+		<tr>
+				<td colspan="2"><strong>搬离地址</strong></td>
+				<td colspan="4"><?php $dt = $this->data['order'][0];echo htmlspecialchars($dt['from_address'])?></td>
+		</tr>
+		<tr>
+				<td colspan="2"><strong>乔迁地址</strong></td>
+				<td colspan="4"><?php echo htmlspecialchars($dt['to_address'])?></td>
+		</tr>
+		<tr>
+				<td class="bold">联系人</td>
+				<td colspan=""><?php echo htmlspecialchars($dt['name'])?></td>
+				<td class="bold">联系电话</td>
+				<td colspan=""><?php echo htmlspecialchars($dt['phone_number'])?></td>
+				<td class="bold">联系电话</td>
+				<td colspan=""><?php echo htmlspecialchars($dt['phone_number'])?></td>
+		</tr>
+		
+		<!--<tr>
+				<td>预计里程</td>
+				<td></td>
+				<td>预计时间</td>
+				<td></td>
+				<td>需要搬运工人数</td>
+				<td><?php echo htmlspecialchars($dt['person'])?></td>
+		</tr>
+		<tr>
+				<td colspan="3">预算您的搬家费用</td>
+				<td colspan="3">元（大写：             ）</td>
+		</tr>
+		
+		--><tr>
+				<td class="td-title" colspan="6">物品清单</td>
+		</tr>
+		<tr>
+				<td colspan="6" style="text-align: center;">温馨提示：尊敬的客户，您好！非常感谢您选择我公司的服务。为了您的权益，下面的信息请您尽量填写详细。搬家时如果您的物品发生丢失或损坏，信息联络表将作为您维权的依据。</td>
+		</tr>
+		<tr>
+				<td class="bold" colspan="1">大件物品</td>
+				<td colspan="5">长、宽、高任意一边≥1.5米或重量≥80KG，重量如果您不太明确可不填。</td>
+		</tr>
+		<tr>
+			<td colspan="2">名称</td>
+			<td>数量</td>
+			<td colspan="2">尺寸（CM）</td>
+			<td>重量（KG）</td>
+		</tr>
+		<?php foreach($this->data['objects'] as $key =>$value):?>
+		<?php if($value['name'] !="" && $value['type'] === '1'):?>
+		<tr>
+			<td colspan="2"><?php echo htmlspecialchars($value['name'])?></td>
+			<td><?php echo htmlspecialchars($value['num'])?></td>
+			<td colspan="2"><?php echo htmlspecialchars($value['size'])?></td>
+			<td><?php echo htmlspecialchars($value['weight'])?></td>
+		</tr>
+		<?php endif;?>
+		<?php endforeach;?>
+		<tr>
+				<td class="bold" colspan="1">普通物品</td>
+				<td colspan="5">长、宽、高任意一边均＜1.5米或重量＜80KG</td>
+		</tr>
+		<tr>
+			<td colspan="2">名称</td>
+			<td>数量</td>
+			<td colspan="2">尺寸（CM）</td>
+			<td>重量（KG）</td>
+		</tr>
+		<?php foreach($this->data['objects'] as $key =>$value):?>
+		<?php if($value['name'] !="" && $value['type'] === '0'):?>
+		<tr>
+			<td colspan="2"><?php echo htmlspecialchars($value['name'])?></td>
+			<td><?php echo htmlspecialchars($value['num'])?></td>
+			<td colspan="2"><?php echo htmlspecialchars($value['size'])?></td>
+			<td><?php echo htmlspecialchars($value['weight'])?></td>
+		</tr>
+		<?php endif;?>
+		<?php endforeach;?>
+		<tr>
+				<td class="bold" colspan="3">小件物品</td>
+				<td colspan="3">我公司免费提供周转箱，方便您小件物品整体打包。</td>
+		</tr>
+		<tr>
+				<td colspan="3">您需要的周转箱个数</td>
+				<td colspan="3"><?php echo htmlspecialchars($dt['box'])?></td>
+		</tr>
+		<tr>
+				<td colspan="6">您是否有贵重物品需要搬运
+				<div>（小件贵重物品请您自行携带，大件物品请您提前和我们的客服进行联系。）</div>
+				</td>
+		</tr>
+		<tr>
+			<td colspan="6">无&nbsp;&nbsp;&nbsp;<?php if($dt['is_precious'] === '0') echo '√';?>
+				有&nbsp;&nbsp;&nbsp;<?php if($dt['is_precious'] === '1') echo '√';if($dt['precious_name'] !== '') echo "&nbsp;&nbsp;&nbsp;物品名称：".$dt['precious_name'];?></td>
+		</tr>
+		<tr>
+				<td colspan="6">您是否需要我们帮您打包
+				<div>（我们对于您提供的包装材料提供免费打包服务。）</div>
+				</td>
+				
+		</tr>
+		<tr>
+		<td colspan="6">不需要&nbsp;&nbsp;&nbsp;<?php if($dt['is_pack'] === '0') echo '√';?>
+				需要&nbsp;&nbsp;&nbsp;<?php if($dt['is_pack'] === '1') echo '√';?></td>
+		</tr>
+		<tr>
+				<td colspan="6">您是否需要我们帮您拆装
+				<div>（除空调等专业设备外我们为您提供免费拆装服务。）</div>
+				</td>
+				
+		</tr>
+		<tr>
+		<td colspan="6">不需要&nbsp;&nbsp;&nbsp;<?php if($dt['is_dismount'] === '0') echo '√';?>
+				需要&nbsp;&nbsp;&nbsp;<?php if($dt['is_pack'] === '1') echo '√';?></td>
+		</tr>
+		<tr>
+				<td colspan="6" class="td-title">以下信息由搬家公司填写</td>
+		</tr>
+		<tr>
+				<td>旧址楼层</td>
+				<td></td>
+				<td>是否有电梯</td>
+				<td>有□ 无□</td>
+				<td>小区停车费</td>
+				<td></td>
+		</tr>
+		
+		<tr>
+				<td>新址楼层</td>
+				<td></td>
+				<td>是否有电梯</td>
+				<td>有□ 无□</td>
+				<td>小区停车费</td>
+				<td></td>
+		</tr>
+		<tr>
+				<td>车辆起始里程</td>
+				<td></td>
+				<td>车辆结束里程</td>
+				<td></td>
+				<td>里程总计</td>
+				<td></td>
+		</tr>
+		
+		<tr>
+				<td>起始时间</td>
+				<td></td>
+				<td>结束时间</td>
+				<td></td>
+				<td>时间总计</td>
+				<td></td>
+		</tr>
+		<tr>
+				<td colspan="2">普通搬家工人数</td>
+				<td colspan=""></td>
+				<td colspan="2">专业搬家工人数</td>
+				<td colspan=""></td>
+		</tr>
+		<tr>
+				<td colspan="2">您的搬家费用合计</td>
+				<td colspan="4">人民币：__________ 元（大写：____________________ ）</td>
+		</tr>
+		<tr>
+				<td colspan="6" class="td-title">以下信息由客户填写</td>
+		</tr>
+		<tr>
+				<td colspan="2">搬运过程中是否有物品丢失</td>
+				<td colspan="">有□  无□</td>
+				<td colspan="2">搬运过程中是否有物品损坏</td>
+				<td colspan="">有□   无□</td>
+		</tr>
+		<tr>
+				<td colspan="3">您对我们今天的服务的评价</td>
+				<td colspan="3">10□ 9□ 8□ 7□ 6□ 5□ 4□ 3□ 2□ 1□</td>
+		</tr>
+		<tr>
+				<td colspan="6" class="bold" style="text-align: center;"><span style="margin-right: 70px;">您对以上信息已进行确认！</span>客户签名：</td>
+		</tr>
+		<!--<tr>
+				<td>旧址楼层</td>
+				<td><?php echo htmlspecialchars($dt['from_floor'])?></td>
+				<td>是否有电梯</td>
+				<td><?php echo htmlspecialchars($dt['from_left']) == "1"?'有':"无"?></td>
+				<td>小区停车费</td>
+				<td><?php echo htmlspecialchars($dt['from_fee'])?></td>
+		</tr>
+		
+		<tr>
+				<td>新址楼层</td>
+				<td><?php echo htmlspecialchars($dt['to_floor'])?></td>
+				<td>是否有电梯</td>
+				<td><?php echo htmlspecialchars($dt['to_left']) == "1"?'有':"无"?></td>
+				<td>小区停车费</td>
+				<td><?php echo htmlspecialchars($dt['to_fee'])?></td>
+		</tr>
+		-->
+		<tr>
+				<td colspan="6" class="td-title">以下信息由搬家公司填写</td>
+		</tr>
+		<tr>
+				<td >队长签字</td>
+				<td colspan="2"></td>
+				<td >搬家工人签字</td>
+				<td colspan="2"></td>
+		</tr>
+	</tbody>
+</table>
+<!--endprint0-->
+</div>
+</div>
+</div>
+<object id="WebBrowser" width=0 height=0 classid="CLSID:8856F961-340A-11D0-A96B-00C04FD705A2"> 
+</object>
+<button id="btnPrint" class="btn btn-app btn-light btn-xs">
+<i class="icon-print bigger-160"></i>打印</button>
+<script>
+function preview(oper){
+	if (oper < 10){
+		bdhtml=window.document.body.innerHTML;//获取当前页的html代码
+		sprnstr="<!--startprint"+oper+"-->";//设置打印开始区域
+		eprnstr="<!--endprint"+oper+"-->";//设置打印结束区域
+		prnhtml=bdhtml.substring(bdhtml.indexOf(sprnstr)+18); //从开始代码向后取html
+		prnhtml=prnhtml.substring(0,prnhtml.indexOf(eprnstr));//从结束代码向前取html
+		window.document.body.innerHTML=prnhtml;
+		window.print();
+		window.document.body.innerHTML=bdhtml;
+	} else {
+		window.print();
+	}
+}
+$('#btnPrint').live('click', function(){
+	preview(0);
+});
+</script>
